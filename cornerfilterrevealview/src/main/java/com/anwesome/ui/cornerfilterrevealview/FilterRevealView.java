@@ -17,6 +17,7 @@ public class FilterRevealView extends View{
     private int render = 0,w,h;
     private int color = Color.WHITE;
     private RevealButton revealButton;
+    private ColorFilterRect colorFilterRect;
     public FilterRevealView(Context context, Bitmap bitmap) {
         super(context);
     }
@@ -29,8 +30,10 @@ public class FilterRevealView extends View{
             h = canvas.getHeight();
             bitmap = Bitmap.createScaledBitmap(bitmap,w,h,true);
             revealButton = new RevealButton();
+            colorFilterRect = new ColorFilterRect();
         }
         canvas.drawBitmap(bitmap,0,0,paint);
+        colorFilterRect.draw(canvas);
         revealButton.draw(canvas);
         render++;
     }
