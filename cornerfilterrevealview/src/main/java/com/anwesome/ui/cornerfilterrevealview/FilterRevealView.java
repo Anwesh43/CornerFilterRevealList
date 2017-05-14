@@ -37,5 +37,33 @@ public class FilterRevealView extends View{
         }
         return true;
     }
-    
+    private class RevealButton {
+        private float x,y,size,maxW,deg = 45;
+        public RevealButton() {
+            size = w/20;
+            x = w/10;
+            y = w/10;
+            maxW = 8*w/10;
+        }
+        public void update(float factor) {
+            deg = 45+180*factor;
+            x = w/10+(8*w/10)*factor;
+            y = w/10+(8*w/10)*factor;
+        }
+        public void draw(Canvas canvas) {
+            canvas.save();
+            canvas.translate(x,y);
+            paint.setColor(Color.WHITE);
+            paint.setStrokeWidth(size/6);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            for(int i=0;i<2;i++) {
+                canvas.save();
+                canvas.translate(0,0);
+                canvas.rotate(45*(2*i-1));
+                canvas.drawLine(-size,0,0,0,paint);
+                canvas.restore();
+            }
+            canvas.restore();
+        }
+    }
 }
