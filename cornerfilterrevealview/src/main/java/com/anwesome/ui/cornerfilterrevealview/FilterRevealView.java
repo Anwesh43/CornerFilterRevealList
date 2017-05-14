@@ -1,5 +1,8 @@
 package com.anwesome.ui.cornerfilterrevealview;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -36,6 +39,10 @@ public class FilterRevealView extends View{
         colorFilterRect.draw(canvas);
         revealButton.draw(canvas);
         render++;
+    }
+    public void update(float factor) {
+        colorFilterRect.update(factor);
+        revealButton.update(factor);
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -81,6 +88,36 @@ public class FilterRevealView extends View{
         public void update(float factor) {
             rw = w*factor;
             rh = h*factor;
+        }
+    }
+    private class AnimationHandler extends AnimatorListenerAdapter implements ValueAnimator.AnimatorUpdateListener{
+        private ValueAnimator upAnim = ValueAnimator.ofFloat(0,1),downAnim = ValueAnimator.ofFloat(1,0);
+        private int dir = 0;
+        private boolean isAnimating = false;
+        public AnimationHandler() {
+            downAnim.addUpdateListener(this);
+            upAnim.addUpdateListener(this);
+            downAnim.addListener(this);
+            upAnim.addListener(this);
+            downAnim.setDuration(500);
+            upAnim.setDuration(500);
+        }
+        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            update((float)valueAnimator.getAnimatedValue());
+        }
+        public void onAnimationEnd(Animator animator) {
+            if(isAnimating) {
+                isAnimating = false;
+            }
+        }
+        public void start() {
+            if(dir == 0) {
+                upAnim.start();
+            }
+            else {
+                downAnim.start();
+            }
+            dir = dir == 0?1:0;
         }
     }
 }
