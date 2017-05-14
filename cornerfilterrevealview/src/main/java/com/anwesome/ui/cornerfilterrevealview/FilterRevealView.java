@@ -21,6 +21,7 @@ public class FilterRevealView extends View{
     private int color = Color.WHITE;
     private RevealButton revealButton;
     private ColorFilterRect colorFilterRect;
+    private AnimationHandler animationHandler;
     public FilterRevealView(Context context, Bitmap bitmap) {
         super(context);
     }
@@ -34,6 +35,7 @@ public class FilterRevealView extends View{
             bitmap = Bitmap.createScaledBitmap(bitmap,w,h,true);
             revealButton = new RevealButton();
             colorFilterRect = new ColorFilterRect();
+            animationHandler = new AnimationHandler();
         }
         canvas.drawBitmap(bitmap,0,0,paint);
         colorFilterRect.draw(canvas);
@@ -46,7 +48,7 @@ public class FilterRevealView extends View{
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-
+            animationHandler.start();
         }
         return true;
     }
