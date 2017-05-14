@@ -24,6 +24,7 @@ public class FilterRevealView extends View{
     private AnimationHandler animationHandler;
     public FilterRevealView(Context context, Bitmap bitmap) {
         super(context);
+        this.bitmap = bitmap;
     }
     public void setColor(int color) {
         this.color = color;
@@ -45,6 +46,7 @@ public class FilterRevealView extends View{
     public void update(float factor) {
         colorFilterRect.update(factor);
         revealButton.update(factor);
+        postInvalidate();
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -55,7 +57,7 @@ public class FilterRevealView extends View{
     private class RevealButton {
         private float x,y,size,maxW,deg = 45;
         public RevealButton() {
-            size = w/20;
+            size = w/15;
             x = w/10;
             y = w/10;
             maxW = 8*w/10;
@@ -68,6 +70,7 @@ public class FilterRevealView extends View{
         public void draw(Canvas canvas) {
             canvas.save();
             canvas.translate(x,y);
+            canvas.rotate(deg);
             paint.setColor(Color.WHITE);
             paint.setStrokeWidth(size/6);
             paint.setStrokeJoin(Paint.Join.ROUND);
@@ -113,13 +116,15 @@ public class FilterRevealView extends View{
             }
         }
         public void start() {
-            if(dir == 0) {
-                upAnim.start();
+            if(!isAnimating) {
+                if (dir == 0) {
+                    upAnim.start();
+                } else {
+                    downAnim.start();
+                }
+                dir = dir == 0 ? 1 : 0;
+                isAnimating = true;
             }
-            else {
-                downAnim.start();
-            }
-            dir = dir == 0?1:0;
         }
     }
 }
