@@ -18,9 +18,11 @@ public class CornerLayout extends ViewGroup {
         for(int i=0;i<getChildCount();i++) {
             View child = getChildAt(i);
             measureChild(child,wspec,hspec);
-            if(i%3 == 1) {
-                hNew += child.getMeasuredHeight()+h/20;
-            }
+            hNew = updateY(i,hNew);
+            hNew = updateY(i,hNew);
+        }
+        if(getChildCount() % 3 != 0) {
+            hNew += h / 4 + h / 10;
         }
         setMeasuredDimension(w,Math.max(hNew,h));
     }
@@ -33,14 +35,16 @@ public class CornerLayout extends ViewGroup {
         requestLayout();
     }
     public void onLayout(boolean reloaded,int a,int b,int w,int h) {
-        int xs[] = {w/20,w/20+w/2,w/20},y = w/20;
+        int xs[] = {w/20,19*w/20-gap,w/2-gap/2},y = w/20;
         for(int i=0;i<getChildCount();i++) {
+            y = updateY(i,y);
             View child = getChildAt(i);
             child.layout(xs[i%3],y,xs[i%3]+child.getMeasuredWidth(),y+child.getMeasuredHeight());
-            if(i%3 == 1) {
-                y+=gap;
-            }
+            y = updateY(i,y);
         }
+    }
+    private int updateY(int i,int y) {
+        return i%3 == 2?y+h/4+h/20:y;
     }
     public void initDimension(Context context) {
         DisplayManager displayManager = (DisplayManager)context.getSystemService(Context.DISPLAY_SERVICE);
