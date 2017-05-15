@@ -57,10 +57,10 @@ public class FilterRevealView extends View{
     private class RevealButton {
         private float x,y,size,maxW,deg = 45;
         public RevealButton() {
-            size = w/15;
-            x = w/10;
-            y = w/10;
-            maxW = 8*w/10;
+            size = w/10;
+            x = w/5+size;
+            y = w/5+size;
+            maxW = 7*w/10;
         }
         public void update(float factor) {
             deg = 45+180*factor;
